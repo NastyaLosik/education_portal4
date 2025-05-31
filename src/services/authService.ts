@@ -84,6 +84,9 @@ const getFavoriteCourses = async (userId: string) => {
 
   return favoriteCourses;
 };
+const getAllUsers = async () => {
+  return await UserModel.find();
+};
 
 export const authService = {
   registerUser,
@@ -94,4 +97,5 @@ export const authService = {
   addToFavorite,
   removeFromFavorites,
   getFavoriteCourses,
+  getAllUsers,
 };

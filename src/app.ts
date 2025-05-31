@@ -7,6 +7,7 @@ import { courseRoutes } from "./routes/courseRoutes";
 import { favoriteRoutes } from "./routes/favoriteRoutes";
 import { lessonRoutes } from "./routes/lessonRoutes";
 import { commentRoutes } from "./routes/commentRoutes";
+import { enrollmentRoutes } from "./routes/enrollmentRoutes";
 
 dotenv.config();
 const PORT = process.env.PORT || 3000;
@@ -18,6 +19,7 @@ app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 app.use("/api", courseRoutes);
+app.use("/api", enrollmentRoutes);
 app.use("/api/favorites", favoriteRoutes);
 app.use("/api/lesson", lessonRoutes);
 app.use("/api/comment", commentRoutes);

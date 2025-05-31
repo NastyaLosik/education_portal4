@@ -57,10 +57,19 @@ const deleteUser = async (req: Request, res: Response) => {
     res.status(400).json({ error: err.message });
   }
 };
+const getAllUsers = async (req: Request, res: Response) => {
+  try {
+    const users = await authService.getAllUsers();
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+};
 
 export const authController = {
   register,
   login,
   getUserData,
   deleteUser,
+  getAllUsers,
 };
