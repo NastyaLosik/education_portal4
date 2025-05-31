@@ -1,4 +1,4 @@
-import { EnrollmentModel } from "../models/enrollment";
+import { Enrollment, EnrollmentModel } from "../models/enrollment";
 import { LessonModel } from "../models/lesson";
 import { Types } from "mongoose";
 
@@ -64,10 +64,10 @@ export const markLessonCompleted = async (
   await enrollment.save();
   return enrollment;
 };
-const unenrollFromCourse = async (userId: string, courseId: string) => {
+const unenrollFromCourse = async (enrollmentDate: Enrollment) => {
   const result = await EnrollmentModel.deleteOne({
-    user: userId,
-    course: courseId,
+    user: enrollmentDate.user,
+    course: enrollmentDate.course,
   });
 
   if (result.deletedCount === 0) {
@@ -76,6 +76,17 @@ const unenrollFromCourse = async (userId: string, courseId: string) => {
 
   return { message: "Вы успешно отменили запись" };
 };
+const getStudents = async (courseId: string) => {
+  const enrollments = await EnrollmentModel.find({ course: courseId }).populate(
+    "user",
+    "firstName secondName",
+  );
+
+  return {
+    enrollments,
+    count: enrollments.length,
+  };
+};
 
 export const enrollmentService = {
   enrollInCourse,
@@ -83,4 +94,5 @@ export const enrollmentService = {
   getEnrollmentsByCourseId,
   markLessonCompleted,
   unenrollFromCourse,
+  getStudents,
 };

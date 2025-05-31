@@ -66,15 +66,31 @@ export const enrollmentController = {
   },
   unenroll: async (req: Request, res: Response): Promise<void> => {
     try {
-      const { userId, courseId } = req.body;
+      const enrollmentDate = req.body;
 
-      if (!userId || !courseId) {
+      if (!enrollmentDate.user || !enrollmentDate.course) {
         res.status(400).json({ message: "userId и courseId обязательны" });
         return;
       }
 
-      await enrollmentService.unenrollFromCourse(userId, courseId);
+      await enrollmentService.unenrollFromCourse(enrollmentDate);
       res.json({ message: "Запись на курс отменена" });
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  },
+
+  getStudents: async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { courseId } = req.params;
+
+      if (!courseId) {
+        res.status(400).json({ message: "courseId обязателен" });
+        return;
+      }
+
+      const result = await enrollmentService.getStudents(courseId);
+      res.json(result);
     } catch (error: any) {
       res.status(500).json({ message: error.message });
     }
